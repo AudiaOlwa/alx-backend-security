@@ -1,0 +1,21 @@
+# VS Code
+.vscode/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Env
+.env/
+venv/
+
+# Django
+*.sqlite3
+/static/
+media/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
