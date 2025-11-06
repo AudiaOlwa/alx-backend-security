@@ -6,6 +6,12 @@ from django.http import HttpResponseForbidden
 from .models import BlockedIP
 from django.utils.timezone import now
 from django.db import connection
+from django.core.cache import cache
+import ipinfo
+
+
+# ipinfo API (free mode can work without token)
+handler = ipinfo.getHandler(access_token=None)
 
 class IPLoggingMiddleware(MiddlewareMixin):
     def process_request(self, request):
@@ -25,18 +31,29 @@ class IPTrackingMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Get IP
-        client_ip, _ = get_client_ip(request)
+        ip, _ = get_client_ip(request)
+        ip = ip or "0.0.0.0"
 
-        # ✅ Block request if IP is blacklisted
-        if client_ip and BlockedIP.objects.filter(ip_address=client_ip).exists():
-            return HttpResponseForbidden("Access denied. Your IP is blocked.")
+        cache_key = f"geo_{ip}"
+        geo = cache.get(cache_key)
 
-        # ✅ Log request
+        if not geo:
+            try:
+                details = handler.getDetails(ip)
+                geo = {
+                    "country": getattr(details, "country", None),
+                    "city": getattr(details, "city", None),
+                }
+                cache.set(cache_key, geo, timeout=86400)
+            except Exception:
+                geo = {"country": None, "city": None}
+
         RequestLog.objects.create(
-            ip_address=client_ip or "unknown",
+            ip_address=ip,
             timestamp=now(),
-            path=request.path
+            path=request.path,
+            country=geo["country"],
+            city=geo["city"]
         )
 
         return self.get_response(request)
