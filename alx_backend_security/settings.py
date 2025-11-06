@@ -125,3 +125,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+RATELIMIT_USE_CACHE = 'default'
+
+# 10 req/min pour users connectés
+AUTH_RATE = '10/m'
+
+# 5 req/min pour users anonymes
+ANON_RATE = '5/m'
