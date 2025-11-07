@@ -12,6 +12,8 @@ click-repl==0.3.0
 Django==5.2.8
 django-ipware==7.0.1
 django-ratelimit==4.1.0
+djangorestframework
+drf-yasg
 gunicorn==23.0.0
 idna==3.11
 ipinfo==3.0.0
