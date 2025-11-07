@@ -8,23 +8,36 @@ from django.utils.timezone import now
 from django.db import connection
 from django.core.cache import cache
 import ipinfo
-
+from django.db import OperationalError
 
 # ipinfo API (free mode can work without token)
 handler = ipinfo.getHandler(access_token=None)
 
+#class IPLoggingMiddleware(MiddlewareMixin):
+#    def process_request(self, request):
+#        ip, _ = get_client_ip(request)
+#        if ip is None:
+#            ip = "0.0.0.0"  # fallback
+#
+#        RequestLog.objects.create(
+#            ip_address=ip,
+#            timestamp=timezone.now(),
+#            path=request.path
+#        )
+
 class IPLoggingMiddleware(MiddlewareMixin):
     def process_request(self, request):
         ip, _ = get_client_ip(request)
-        if ip is None:
-            ip = "0.0.0.0"  # fallback
-
-        RequestLog.objects.create(
-            ip_address=ip,
-            timestamp=timezone.now(),
-            path=request.path
-        )
-
+        ip = ip or "0.0.0.0"
+        try:
+            RequestLog.objects.create(
+                ip_address=ip,
+                timestamp=timezone.now(),
+                path=request.path
+            )
+        except OperationalError:
+            # Table non créée encore, ignorer pour l'instant
+            pass
 
 class IPTrackingMiddleware:
     def __init__(self, get_response):
