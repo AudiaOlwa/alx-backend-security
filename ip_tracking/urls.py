@@ -16,7 +16,7 @@ schema_view = get_schema_view(
 )
 
 def home_view(request):
-    return HttpResponse("Bienvenue sur ALX Backend Security!")
+    return HttpResponse("Welcome to ALX Backend Security! Project successfully deployed with Render")
 
 urlpatterns = [
     path('', home_view),
