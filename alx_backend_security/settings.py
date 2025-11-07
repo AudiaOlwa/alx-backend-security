@@ -18,7 +18,7 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'rpc://')
 
 # Sécurité & host
 #SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-secret')
-A#LLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+#ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
