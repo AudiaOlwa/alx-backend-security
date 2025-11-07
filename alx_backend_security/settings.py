@@ -17,8 +17,8 @@ CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'rpc://')
 
 # Sécurité & host
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-secret')
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+#SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-secret')
+A#LLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,10 +32,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3eci*g%2et=nvt@@&rhkrp349mu*gvfx&)k_lkrxkonk*m7d9-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']  # Ou ton domaine Render
-
-
+#ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
